@@ -1,6 +1,6 @@
 <?php
 
-use App\Http\Controllers\WelcomeController;
+use App\Http\Controllers\SelectController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -18,4 +18,6 @@ use Illuminate\Support\Facades\Route;
 //     return view('welcome');
 // });
 
-Route::get('/', [WelcomeController::class, 'index']);
+Route::get('/select', [SelectController::class, 'index']);
+Route::get('/select/prodis', [SelectController::class, 'getProdis']);
+Route::get('/select/perguruan-tinggis', [SelectController::class, 'getPerguruanTinggis']);

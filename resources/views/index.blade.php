@@ -839,12 +839,70 @@
 
         <form>
             <select name="jurusan" id="jurusan">
-                <option value="">Pilih jurusan</option>
-                @foreich ($jurusans as $jurusan)
-                <option value="{{ $jurusan->id }}">{{ $jurusan->namaJurusan }}</option>
+                <option value="">Pilih Jurusan</option>
+                @foreach ($jurusans as $jurusan)
+                    <option value="{{ $jurusan->id }}">{{ $jurusan->namaJurusan }}</option>
+                @endforeach
+            </select>
+
+            <select name="prodi" id="prodi">
+                <option value="">Pilih Prodi</option>
+            </select>
+
+            <select name="perguruan_tinggi" id="perguruan_tinggi">
+                <option value="">Pilih Perguruan Tinggi</option>
             </select>
         </form>
     </div>
+
+<script>
+        $(document).ready(function () {
+            $('#jurusan').change(function () {
+                var jurusanId = $(this).val();
+
+                if (jurusanId) {
+                    $.ajax({
+                        url: '/select/prodis?jurusan_id=' + jurusanId,
+                        type: 'GET',
+                        dataType: 'json',
+                        success: function (data) {
+                            $('#prodi').empty();
+                            $('#prodi').append('<option value="">Pilih Prodi</option>');
+
+                            $.each(data, function (key, value) {
+                                $('#prodi').append('<option value="' + value.id + '">' + value.nama_prodi + '</option>');
+                            });
+                        }
+                    });
+                } else {
+                    $('#prodi').empty();
+                    $('#perguruan_tinggi').empty();
+                }
+            });
+
+            $('#prodi').change(function () {
+                var prodiId = $(this).val();
+
+                if (prodiId) {
+                    $.ajax({
+                        url: '/select/perguruan-tinggis?prodi_id=' + prodiId,
+                        type: 'GET',
+                        dataType: 'json',
+                        success: function (data) {
+                            $('#perguruan_tinggi').empty();
+                            $('#perguruan_tinggi').append('<option value="">Pilih Perguruan Tinggi</option>');
+
+                            $.each(data, function (key, value) {
+                                $('#perguruan_tinggi').append('<option value="' + value.id + '">' + value.nama_pt + '</option>');
+                            });
+                        }
+                    });
+                } else {
+                    $('#perguruan_tinggi').empty();
+                }
+            });
+        });
+    </script>
 </body>
 
 </html>
