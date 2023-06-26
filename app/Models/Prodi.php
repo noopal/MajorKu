@@ -11,6 +11,11 @@ class Prodi extends Model
 
     public function perguruanTinggi()
     {
-        return $this->hasOne(PerguruanTinggi::class);
+        return $this->hasMany(PerguruanTinggi::class);
+    }
+
+    public function jurusan()
+    {
+        return $this->belongsTo(Jurusan::class);
     }
 }

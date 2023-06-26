@@ -9,21 +9,16 @@ use Illuminate\Http\Request;
 
 class SelectController extends Controller
 {
-    public function index()
+    public function showForm()
     {
         $jurusans = Jurusan::all();
-        return view('index', compact('jurusans'));
+        return view('form', compact('jurusans'));
     }
 
-    public function getProdis(Request $request)
+    public function getPerguruanTinggi(Request $request)
     {
-        $prodis = Prodi::where('jurusan_id', $request->jurusan_id)->get();
-        return response()->json($prodis);
-    }
-
-    public function getPerguruanTinggis(Request $request)
-    {
-        $perguruanTinggis = PerguruanTinggi::where('prodi_id', $request->prodi_id)->get();
-        return response()->json($perguruanTinggis);
+        $prodiId = $request->input('prodi');
+        $perguruanTinggis = PerguruanTinggi::where('prodi_id', $prodiId)->get();
+        return view('perguruan-tinggi', compact('perguruanTinggis'));
     }
 }

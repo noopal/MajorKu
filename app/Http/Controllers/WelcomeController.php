@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Jurusan;
+use App\Models\Prodi;
 use Illuminate\Http\Request;
 
 class WelcomeController extends Controller
@@ -12,10 +13,10 @@ class WelcomeController extends Controller
      */
     public function index()
     {
-        $jurusans = Jurusan::all();
+        $jurusans = Jurusan::with('prodis')->get();
+        $prodis = Prodi::all();
 
-        return view('welcome', ['jurusans' => $jurusans]);
-        // dd($jurusans);
+        return view('blog', compact('jurusans', 'prodis'));
     }
 
     /**
