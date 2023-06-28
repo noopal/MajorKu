@@ -14,9 +14,49 @@
     <!-- Styles -->
     <script src="https://cdn.tailwindcss.com?plugins=forms,typography,aspect-ratio,line-clamp"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/flowbite/1.6.6/flowbite.min.css" rel="stylesheet" />
+    <style>
+        .accordion {
+            width: 100%;
+            margin-top: 20px;
+        }
+
+        .accordion-item {
+            border: 1px solid #ccc;
+            margin-bottom: 10px;
+        }
+
+        .accordion-header {
+            background-color: #f5f5f5;
+            padding: 10px;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .accordion-header h3 {
+            margin: 0;
+        }
+
+        .accordion-content {
+            display: none;
+            padding: 10px;
+        }
+
+        ul {
+            margin: 0;
+            padding: 0;
+            list-style-type: none;
+        }
+
+        ul li {
+            margin-bottom: 5px;
+        }
+    </style>
 
     <!-- Script -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
 </head>
 
 <body class="antialiased">
@@ -60,41 +100,38 @@
     <div class="px-40 py-12">
         <div>
             <h1 class="text-4xl font-bold py-3">Daftar Kejuruan</h1>
-            <ul>
+            <div class="accordion">
                 @foreach ($jurusans as $jurusan)
-                    <div class="py-3 w-full">
-                        <div class="bg-slate-100 p-3 rounded-md">
-                            <li class="text-3xl font-bold mb-2">{{ $jurusan->namaJurusan }}</li>
-                            <li>{{ $jurusan->keterangan }}</li>
-                            <ul class="py-3">
-                                <p class="font-semibold text-2xl">Daftar Prodi {{ $jurusan->namaJurusan }} :</p>
+                    <div class="accordion-item">
+                        <div class="accordion-header">
+                            <h3>{{ $jurusan->namaJurusan }}</h3>
+                            <span class="icon"></span>
+                        </div>
+                        <div class="accordion-content">
+                            <ul>
                                 @foreach ($jurusan->prodis as $prodi)
-                                    <li class="text-lg">{{ $prodi->nama_prodi }}</li>
-                                    <li class="p-2">{{ $prodi->keterangan }}</li>
+                                    <li>{{ $prodi->nama_prodi }}</li>
+                                    <li>{{ $prodi->keterangan }}</li>
                                 @endforeach
                             </ul>
                         </div>
                     </div>
                 @endforeach
+            </div>
 
-
-                {{-- @foreach ($jurusans as $jurusan)
-                    <div class="py-3 h-50">
-                        <div class="text-white bg-amber-400 p-3 rounded-md">
-                            <li class="text-xl font-bold">{{ $jurusan->namaJurusan }}</li>
-                            <li>{{ $jurusan->keterangan }}</li>
-                            <ul>
-                                @foreach ($jurusan->prodis as $prodi)
-                                    <li>{{ $prodi->nama_prodi }}</li>
-                                @endforeach
-                            </ul>
-                        </div>
-
-                    </div>
-                @endforeach --}}
-            </ul>
         </div>
     </div>
+
+    <script>
+        $(document).ready(function() {
+            $('.accordion-header').click(function() {
+                $(this).toggleClass('active');
+                $(this).next('.accordion-content').slideToggle();
+                $('.accordion-header').not($(this)).removeClass('active');
+                $('.accordion-content').not($(this).next('.accordion-content')).slideUp();
+            });
+        });
+    </script>
 </body>
 
 </html>

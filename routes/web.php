@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\PerguruanTinggiController;
+use App\Http\Controllers\ProdiController;
 use App\Http\Controllers\SelectController;
 use App\Http\Controllers\WelcomeController;
 use Illuminate\Support\Facades\Route;
@@ -31,3 +33,7 @@ Route::post('/perguruan-tinggi', [SelectController::class, 'getPerguruanTinggi']
 
 // Route untuk menampilkan halaman blog
 Route::get('/blog', [WelcomeController::class, 'index']);
+
+Route::resource('tambah-perguruan-tinggi', PerguruanTinggiController::class);
+
+Route::resource('prodi', ProdiController::class);

@@ -7,7 +7,9 @@ use Illuminate\Database\Eloquent\Model;
 
 class Prodi extends Model
 {
-    protected $fillable = ['nama_prodi', 'jurusan_id'];
+    protected $table = 'prodis';
+
+    protected $fillable = ['nama_prodi', 'keterangan', 'jurusan_id'];
 
     public function perguruanTinggi()
     {
