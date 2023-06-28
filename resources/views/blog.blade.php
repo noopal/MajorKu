@@ -15,48 +15,30 @@
     <script src="https://cdn.tailwindcss.com?plugins=forms,typography,aspect-ratio,line-clamp"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/flowbite/1.6.6/flowbite.min.css" rel="stylesheet" />
     <style>
-        .accordion {
-            width: 100%;
-            margin-top: 20px;
-        }
-
-        .accordion-item {
-            border: 1px solid #ccc;
-            margin-bottom: 10px;
-        }
-
-        .accordion-header {
-            background-color: #f5f5f5;
-            padding: 10px;
+        .ui-accordion-header {
             cursor: pointer;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
         }
 
-        .accordion-header h3 {
-            margin: 0;
+        .ui-accordion-header:hover {
+            background-color: #f5f5f5;
         }
 
-        .accordion-content {
-            display: none;
+        .ui-accordion-content {
             padding: 10px;
         }
 
-        ul {
-            margin: 0;
-            padding: 0;
-            list-style-type: none;
-        }
-
-        ul li {
-            margin-bottom: 5px;
+        .ui-accordion .ui-accordion {
+            margin-left: 20px;
+            margin-top: 10px;
         }
     </style>
 
     <!-- Script -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://code.jquery.com/ui/1.13.0/jquery-ui.min.js"></script>
+    <link rel="stylesheet" href="https://code.jquery.com/ui/1.13.0/themes/base/jquery-ui.css">
 </head>
 
 <body class="antialiased">
@@ -100,35 +82,36 @@
     <div class="px-40 py-12">
         <div>
             <h1 class="text-4xl font-bold py-3">Daftar Kejuruan</h1>
-            <div class="accordion">
+            <div id="accordion-jurusan">
                 @foreach ($jurusans as $jurusan)
-                    <div class="accordion-item">
-                        <div class="accordion-header">
-                            <h3>{{ $jurusan->namaJurusan }}</h3>
-                            <span class="icon"></span>
-                        </div>
-                        <div class="accordion-content">
-                            <ul>
-                                @foreach ($jurusan->prodis as $prodi)
-                                    <li>{{ $prodi->nama_prodi }}</li>
-                                    <li>{{ $prodi->keterangan }}</li>
-                                @endforeach
-                            </ul>
-                        </div>
+                    <h3>{{ $jurusan->namaJurusan }}</h3>
+                    <div class="accordion-prodi">
+                        @foreach ($jurusan->prodis as $prodi)
+                            <h3>{{ $prodi->nama_prodi }}</h3>
+                            <div>
+                                <p>Keterangan: {{ $prodi->keterangan }}</p>
+                            </div>
+                        @endforeach
                     </div>
                 @endforeach
             </div>
-
         </div>
     </div>
 
     <script>
-        $(document).ready(function() {
-            $('.accordion-header').click(function() {
-                $(this).toggleClass('active');
-                $(this).next('.accordion-content').slideToggle();
-                $('.accordion-header').not($(this)).removeClass('active');
-                $('.accordion-content').not($(this).next('.accordion-content')).slideUp();
+        $(function() {
+            // Inisialisasi accordion untuk tabel jurusan
+            $("#accordion-jurusan").accordion({
+                collapsible: true,
+                heightStyle: "content",
+                active: false,
+            });
+
+            // Inisialisasi sub-accordion untuk tabel prodi
+            $(".accordion-prodi").accordion({
+                collapsible: true,
+                heightStyle: "content",
+                active: false,
             });
         });
     </script>
