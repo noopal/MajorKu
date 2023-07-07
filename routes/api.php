@@ -28,3 +28,5 @@ Route::get('/blog/{jurusanId}', function ($jurusanId) {
     $programStudis = Prodi::where('jurusan_id', $jurusanId)->get();
     return $programStudis;
 });
+
+Route::post('/midtrans/charge', 'MidtransController@charge');

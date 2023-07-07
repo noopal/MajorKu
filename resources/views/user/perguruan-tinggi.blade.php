@@ -20,6 +20,7 @@
 </head>
 
 <body class="antialiased">
+    {{-- Navbar --}}
     <div class="">
         <nav class="bg-gray-800">
             <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -36,8 +37,23 @@
                                 <li><a href="/blog"
                                         class="text-gray-300 hover:bg-gray-700 px-3 py-2 rounded-md text-sm font-medium">Blog</a>
                                 </li>
-                                <li><a href="/login"
-                                        class="text-gray-300 hover:bg-gray-700 px-3 py-2 rounded-md text-sm font-medium">Login</a>
+                                <li>
+                                    @if (Auth::check())
+                                        @if (Auth::user()->role == 'admin')
+                                            <a href="{{ route('admin.home') }}"
+                                                class="text-gray-300 hover:bg-gray-700 px-3 py-2 rounded-md text-sm font-medium">Go
+                                                to Admin Dashboard</a>
+                                        @else
+                                            <a href="{{ route('user.home') }}"
+                                                class="text-gray-300 hover:bg-gray-700 px-3 py-2 rounded-md text-sm font-medium">Go
+                                                to User Dashboard</a>
+                                        @endif
+                                    @else
+                                        <a href="{{ route('login') }}"
+                                            class="text-gray-300 hover:bg-gray-700 px-3 py-2 rounded-md text-sm font-medium">Login</a>
+                                    @endif
+                                    {{-- <a href="/login"
+                                        class="text-gray-300 hover:bg-gray-700 px-3 py-2 rounded-md text-sm font-medium">Login</a> --}}
                                 </li>
                             </ul>
                         </div>
@@ -57,14 +73,26 @@
             </div>
         </nav>
     </div>
+    {{-- End Navbar --}}
 
     <div class="px-40 py-12">
         <h1>Perguruan Tinggi yang Memiliki Program Studi Tersebut:</h1>
-        <ul>
-            @foreach ($perguruanTinggis as $perguruanTinggi)
-                <li>{{ $perguruanTinggi->nama_pt }}</li>
-            @endforeach
-        </ul>
+        @if (Auth::user()->status_pembayaran)
+            @if ($perguruanTinggis->isEmpty())
+                <p>Tidak ada perguruan tinggi yang sesuai dengan pilihan Anda.</p>
+            @else
+                <ul>
+                    @foreach ($perguruanTinggis as $pt)
+                        <li>{{ $pt->nama_pt }}</li>
+                    @endforeach
+                </ul>
+            @endif
+        @else
+            <!-- Tampilkan pesan jika pengguna belum bayar -->
+            <p>Anda harus melakukan pembayaran untuk melihat hasil perguruan tinggi.</p>
+            <!-- Tambahkan tombol atau tautan untuk mengarahkan pengguna ke halaman pembayaran -->
+            <a href="{{ route('pembayaran') }}">Bayar Sekarang</a>
+        @endif
     </div>
 </body>
 
