@@ -42,46 +42,52 @@
 </head>
 
 <body class="antialiased">
-    <div class="">
-        <nav class="bg-gray-800">
-            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                <div class="flex items-center h-16">
-                    <div class="flex justify-between">
-                        <div class="">
-                            <a href="/" class="text-white text-lg font-semibold">Logo</a>
-                        </div>
-                        <div class="hidden md:block">
-                            <ul class="ml-10 flex items-baseline space-x-4">
-                                <li><a href="/form"
-                                        class="text-gray-300 hover:bg-gray-700 px-3 py-2 rounded-md text-sm font-medium">Home</a>
-                                </li>
-                                <li><a href="/blog"
-                                        class="text-gray-300 hover:bg-gray-700 px-3 py-2 rounded-md text-sm font-medium">Blog</a>
-                                </li>
-                                <li><a href="/login"
-                                        class="text-gray-300 hover:bg-gray-700 px-3 py-2 rounded-md text-sm font-medium">Login</a>
-                                </li>
-                            </ul>
-                        </div>
-                    </div>
-                    <div class="-mr-2 flex md:hidden">
-                        <!-- Tombol untuk menu hamburger pada mode responsif -->
-                        <button type="button"
-                            class="inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-white hover:bg-gray-700 focus:outline-none focus:bg-gray-700 focus:text-white transition duration-150 ease-in-out"
-                            aria-label="Menu">
-                            <svg class="h-6 w-6" stroke="currentColor" fill="none" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                    d="M4 6h16M4 12h16M4 18h16"></path>
-                            </svg>
-                        </button>
-                    </div>
-                </div>
+    {{-- Navbar --}}
+    <nav class="bg-blue-900">
+        <div class="container mx-auto flex items-center justify-between py-6 px-24">
+            <!-- Logo -->
+            <div class="flex items-center"><a href="/">
+                    <img class="h-8 w-auto mr-2" src="{{ asset('img/logo.png') }}" alt="Logo">
+                </a>
             </div>
-        </nav>
-    </div>
+
+            <button
+                class="text-blue-900 font-semibold py-2 px-4 rounded-full hover:bg-blue-600 transition duration-300 ease-in-out md:hidden"
+                id="menu-toggle">
+                <svg class="h-6 w-6 fill-current" viewBox="0 0 20 20">
+                    <path
+                        d="M3 7h14a1 1 0 0 1 0 2H3a1 1 0 0 1 0-2zm0 4h14a1 1 0 0 1 0 2H3a1 1 0 0 1 0-2zm0 4h14a1 1 0 0 1 0 2H3a1 1 0 0 1 0-2z" />
+                </svg>
+            </button>
+            <!-- Menu Mobile -->
+            <div class="hidden md:block" id="menu">
+                <a href="/"
+                    class="text-white font-semibold py-2 px-4 rounded-full hover:bg-blue-600 transition duration-300 ease-in-out">Home</a>
+                <a href="{{ route('blog.index') }}"
+                    class="text-white font-semibold py-2 px-4 rounded-full hover:bg-blue-600 transition duration-300 ease-in-out">Blog</a>
+            </div>
+
+            <!-- Tombol Login -->
+            <div>
+                @if (Auth::check())
+                    @if (Auth::user()->role == 'admin')
+                        <a href="{{ route('admin.home') }}"
+                            class="bg-white hover:bg-blue-400 text-blue-900 font-semibold py-2 px-16 py-4 rounded-full transition duration-300 ease-in-out">Logout</a>
+                    @else
+                        <a href="{{ route('user.home') }}"
+                            class="bg-white hover:bg-blue-400 text-blue-900 font-semibold py-2 px-16 py-4 rounded-full transition duration-300 ease-in-out">Logout</a>
+                    @endif
+                @else
+                    <a href="{{ route('login') }}"
+                        class="bg-white hover:bg-blue-400 text-blue-900 font-semibold py-2 px-16 py-4 rounded-full transition duration-300 ease-in-out">Login</a>
+                @endif
+            </div>
+        </div>
+    </nav>
+    {{-- End Navbar --}}
     <div class="px-40 py-12">
         <div>
-            <h1 class="text-4xl font-bold py-3">Daftar Kejuruan</h1>
+            <h1 class="text-2xl font-bold py-3">Berikut penjalasan program studi berdasarkan jurusan</h1>
             <div id="accordion-jurusan">
                 @foreach ($jurusans as $jurusan)
                     <h3>{{ $jurusan->namaJurusan }}</h3>

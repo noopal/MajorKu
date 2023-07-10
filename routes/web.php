@@ -7,6 +7,7 @@ use App\Http\Controllers\HomeController;
 use App\Http\Controllers\PembayaranController;
 use App\Http\Controllers\UserAuthController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\WelcomeController;
 
 // Route::get('/login', [AuthController::class, 'showLoginForm'])->name('login');
 // Route::post('/login', [AuthController::class, 'login']);
@@ -53,3 +54,5 @@ Route::post('/login', [AuthController::class, 'login']);
 Route::get('/pembayaran', [PembayaranController::class, 'index'])->name('pembayaran');
 Route::post('/pembayaran/checkout', [PembayaranController::class, 'checkout'])->name('pembayaran.checkout');
 Route::post('/pembayaran/notification', [PembayaranController::class, 'notification'])->name('pembayaran.notification');
+
+Route::get('/blog', [WelcomeController::class, 'index'])->name('blog.index');
