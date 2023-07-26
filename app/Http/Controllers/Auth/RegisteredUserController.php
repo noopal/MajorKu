@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Auth;
 
+use App\Events\AssignUserRole;
 use App\Http\Controllers\Controller;
 use App\Models\User;
 use App\Providers\RouteServiceProvider;
@@ -12,45 +13,62 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\Rules;
 use Illuminate\View\View;
+use Illuminate\Support\Facades\Validator;
+
+// use Illuminate\Foundation\Auth\RegistersUsers;
 
 class RegisteredUserController extends Controller
 {
+    // use RegistersUsers;
     /**
      * Display the registration view.
      */
-    public function create(array $data): View
+    protected $redirectTo = RouteServiceProvider::HOME;
+    /**
+     * Show the registration form.
+     *
+     * @return \Illuminate\View\View
+     */
+    public function __construct()
     {
-        return User::create([
-            'name' => $data['name'],
-            'email' => $data['email'],
-            'password' => Hash::make($data['password']),
-            'role' => 'user', // Atur default role sebagai 'user'
-        ]);
+        $this->middleware('guest');
     }
-
+    public function create()
+    {
+        return view('auth.register');
+    }
     /**
      * Handle an incoming registration request.
      *
      * @throws \Illuminate\Validation\ValidationException
      */
-    public function store(Request $request): RedirectResponse
+    public function store(Request $request)
     {
-        $request->validate([
+        $this->validator($request->all())->validate();
+        $user = $this->createUSer($request->all());
+
+        event(new AssignUserRole($user));
+
+        return redirect($this->redirectPath());
+    }
+    protected function validator(array $data)
+    {
+        return Validator::make($data, [
             'name' => ['required', 'string', 'max:255'],
-            'email' => ['required', 'string', 'email', 'max:255', 'unique:' . User::class],
-            'password' => ['required', 'confirmed', Rules\Password::defaults()],
+            'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
+            'password' => ['required', 'string', 'min:8', 'confirmed'],
         ]);
-
-        $user = User::create([
-            'name' => $request->name,
-            'email' => $request->email,
-            'password' => Hash::make($request->password),
+    }
+    protected function createUser(array $data)
+    {
+        return User::create([
+            'name' => $data['name'],
+            'email' => $data['email'],
+            'password' => Hash::make($data['password'])
         ]);
-
-        event(new Registered($user));
-
-        Auth::login($user);
-
-        return redirect(RouteServiceProvider::HOME);
+    }
+    public function redirectPath()
+    {
+        return $this->redirectTo;
     }
 }

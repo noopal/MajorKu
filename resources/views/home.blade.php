@@ -29,7 +29,7 @@
                 <!-- Teks -->
                 <div class="md:block">
                     <div class="ml-4 text-white text-center text-md">
-                        Pilihlah yang terbaik buat kamu
+                        Pilihlah yang terbaik buat kamu!
                     </div>
                 </div>
             </div>

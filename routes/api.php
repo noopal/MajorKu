@@ -3,6 +3,7 @@
 use App\Models\Prodi;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\MidtransController;
 
 /*
 |--------------------------------------------------------------------------
@@ -30,3 +31,4 @@ Route::get('/blog/{jurusanId}', function ($jurusanId) {
 });
 
 Route::post('/midtrans/charge', 'MidtransController@charge');
+// Route::get('/register')/

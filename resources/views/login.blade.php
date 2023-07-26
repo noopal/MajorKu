@@ -58,6 +58,10 @@
                         class="w-full bg-blue-900 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full focus:outline-none focus:shadow-outline transition duration-300 ease-in-out"
                         type="submit">Login</button>
                 </div>
+
+                <div class="py-3 text-center text-sm">
+                    <a href={{ route('register') }}>Belum punya akun ? Daftar Sekarang</a>
+                </div>
             </form>
         </div>
     </div>
